@@ -9,7 +9,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class Main {
 
-    private static volatile HashMap<String,Exchange> exchangeHashMap = new HashMap<>();
+    public static HashMap<String,Exchange> exchangeHashMap = new HashMap<>();
     public static HashMap<String,HashMap<String,String>> API_KEYS = new HashMap<>();
 
     static{
@@ -21,26 +21,23 @@ public class Main {
     private static void CheckTelegramToken(){
         if (SqlManager.getAPI("TELEGRAM").isEmpty()) {
             Scanner input = new Scanner(System.in);
-            System.out.println("Please input the Telegram bot Token\n");
-            System.out.print("TOKEN KEY : ");
-            String APIKEY = input.nextLine();
+            System.out.println("TelegramのBotに接続するためのトークンを入力してください。\n");
+            System.out.print("TOKEN キー : ");
+            String APIKEY = input.next();
             System.out.println();
             SqlManager.setAPI("TELEGRAM",APIKEY,"0");
-            System.out.println("THE TELEGRAM TOKEN IS SETUPED");
-            System.out.println("Now you can enter the /start to bot to Start!");
+            System.out.println("セットアップされました。");
+            System.out.println("Botに「/start」を入力して初めてみましょう！");
         }
     }
 
     private static void CreateExchangesInstance(){
-        CompletableFuture.runAsync(()->exchangeHashMap.put("BINANCE",new Exchange(BinanceExchange.class.getName())));
-        CompletableFuture.runAsync(()->exchangeHashMap.put("GATEIO",new Exchange(GateioExchange.class.getName())));
+        exchangeHashMap.put("BINANCE",new Exchange(BinanceExchange.class.getName(),"BINANCE"));
+        exchangeHashMap.put("GATEIO",new Exchange(GateioExchange.class.getName(),"GATEIO"));
     }
 
     public static void main(String[] args) {
         CheckTelegramToken();
         CreateExchangesInstance();
-
-
-
     }
 }
