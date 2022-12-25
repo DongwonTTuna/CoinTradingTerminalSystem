@@ -51,6 +51,11 @@ public class SqlManager {
             e.printStackTrace();
         }
     }
+
+    public static boolean deleteDBFile(){
+        File file = new File("database.db");
+        return file.delete();
+    }
     public static void setAPI(String exchange,String APIKEY, String PRIVKEY){
         try{
             PreparedStatement st = conn.prepareStatement("INSERT OR REPLACE INTO APIKEY (EXCHANGE, API_KEY, SECRET_KEY) VALUES (?, ?, ?)");
