@@ -3,6 +3,7 @@ package net.dongwontuna.TradeSystem;
 import org.knowm.xchange.binance.BinanceExchange;
 import org.knowm.xchange.gateio.GateioExchange;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.concurrent.CompletableFuture;
@@ -36,12 +37,11 @@ public class Main {
     }
 
     private static void CreateExchangesInstance(){
-        CompletableFuture.runAsync(()->exchangeHashMap.put("BINANCE",new Exchange(BinanceExchange.class.getName(),"BINANCE")));
-        CompletableFuture.runAsync(()->exchangeHashMap.put("GATEIO",new Exchange(GateioExchange.class.getName(),"GATEIO")));
+            exchangeHashMap.put("BINANCE",new Exchange(BinanceExchange.class.getName(),"BINANCE"));
+            exchangeHashMap.put("GATEIO",new Exchange(GateioExchange.class.getName(),"GATEIO"));
     }
 
     private static void CLIFunction(){
-
         while (true){
             Scanner input = new Scanner(System.in);
             System.out.println("" +
@@ -63,7 +63,8 @@ public class Main {
                     "                                   __/ |         __/ |                      \n" +
                     "                                  |___/         |___/                       \n");
             System.out.println("                                                    By DongwonTTuna\n\n");
-            System.out.println("メニューから選択してください。\n");
+            System.out.println("指定したTelegram Botに/Startを入力して初めてみましょう！");
+            System.out.println("その他、変更したいところがありましたらメニューから選択してください。\n");
             System.out.println("1.Telegramのトークンの変更");
             System.out.println("2.データの抹消\n");
             System.out.print("入力：");
@@ -73,6 +74,12 @@ public class Main {
                 case "1" -> ChangeTelegramToken();
                 case "2" -> System.out.println(SqlManager.deleteDBFile() ? "削除されました。": "削除が出来ませんでした。");
                 default -> System.out.println("正しいメニュを入力してください。");
+            }
+
+            try{
+                Thread.sleep(1000);
+            } catch (Exception e){
+                e.printStackTrace();
             }
         }
     }
